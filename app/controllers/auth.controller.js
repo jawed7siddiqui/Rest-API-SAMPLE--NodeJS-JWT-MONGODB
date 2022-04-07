@@ -10,6 +10,8 @@ exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
     address: req.body.address,
     city: req.body.city,
     state: req.body.state,
@@ -59,7 +61,51 @@ exports.signup = (req, res) => {
             return;
           }
 
-          res.send({ message: "User was registered successfully!" });
+          User.findOne({
+            username: req.body.username
+          })
+            .populate("roles", "-__v")
+            .exec((err, user) => {
+              if (err) {
+                res.status(500).send({ message: err });
+                return;
+              }
+            })
+
+          var token = jwt.sign({ id: user.id }, config.secret, {
+            expiresIn: 86400 // 24 hours
+          });
+          res.status(200).send(
+            {  
+              "message": "User was registered successfully!",
+              "userData":{
+
+            username: req.body.username,
+            email: req.body.email,         
+            role: 'client',         
+            "ability": [
+              {
+                "action": "read",
+                "subject": "ACL" //for client access
+            },
+            {
+                "action": "read",
+                "subject": "Auth"
+            }
+              // {
+              //   "action": "manage", //for admin access
+              //   "subject": "all"
+              // }
+            ],
+            "extras": {
+              "eCommerceCartItemsCount": 5
+            }       
+           },
+            accessToken: token,
+            refreshToken: token,
+        });
+
+        //  res.send({ message: "User was registered successfully!" });
         });
       });
     }
@@ -102,12 +148,48 @@ exports.signin = (req, res) => {
       for (let i = 0; i < user.roles.length; i++) {
         authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
       }
-      res.status(200).send({
+      
+      var role = '';
+      if(authorities[0] == 'ROLE_USER'){
+         role = 'client';
+      }
+
+      if(authorities[0] == 'ROLE_ADMIN'){
+        role = 'admin';
+     }
+
+     if(authorities[0] == 'ROLE_MOD'){ //moderator
+      role = 'mod';
+     }
+
+      res.status(200).send(
+        {
+          "userData":{
         id: user._id,
         username: user.username,
         email: user.email,
-        roles: authorities,
-        accessToken: token
-      });
+        // role: authorities[0],
+        role: role, 
+        "ability": [
+          {
+            "action": "read",
+            "subject": "ACL" //for client access
+        },
+        {
+            "action": "read",
+            "subject": "Auth"
+        }
+          // {
+          //   "action": "manage", //for admin access
+          //   "subject": "all"
+          // }
+        ],
+        "extras": {
+          "eCommerceCartItemsCount": 5
+        }       
+       },
+        accessToken: token,
+        refreshToken: token,
+    });
     });
 };
