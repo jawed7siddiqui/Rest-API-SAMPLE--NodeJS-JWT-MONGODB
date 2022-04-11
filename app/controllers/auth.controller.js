@@ -18,7 +18,7 @@ exports.signup = (req, res) => {
     city: req.body.city,
     state: req.body.state,
     phone: req.body.phone,
-    status: "Active",
+    status: "Pending",
     password: bcrypt.hashSync(req.body.password, 8)
   });
 
@@ -203,7 +203,7 @@ const transporter = nodemailer.createTransport({
 
   const mailData = {
     from: 'dev@smartmarine.io',  // sender address
-      to: 'jawed7siddiqui@gmail.com',   // list of receivers
+      to: req.body.email,   // list of receivers
       subject: 'Ticket System - Signup message',
       // text: 'That was easy!'
       html: '<p><b>Welcome !</p><br> <p>Thank you for signup</p><br/>',
