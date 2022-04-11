@@ -1,13 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
+// var nodemailer = require('nodemailer');
 
 const app = express();
 
 var corsOptions = {
-  // origin: "http://localhost:8080"
   origin: "*"
-
 };
 
 app.use(cors(corsOptions));
@@ -35,6 +34,8 @@ db.mongoose
     process.exit();
   });
 
+
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to ticket system application." });
@@ -43,6 +44,7 @@ app.get("/", (req, res) => {
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/admin.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;

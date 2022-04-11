@@ -15,7 +15,7 @@ exports.userBoard = (req, res) => {
       users:User,
     }
     res.json(data);
-  });
+  }).sort({username: 1});
   // res.status(200).send("User Content.");
 };
 
@@ -28,6 +28,29 @@ exports.userDetail = (req, res) => {
   });
   // res.status(200).send("User Content.");
 };
+
+exports.userStatus = (req, res) => {
+     var isActive = '';
+    if(req.body.status == 'Pending'){
+        isActive = 'Active';
+    }else{
+        isActive = 'Pending';
+
+    }
+    User.findOneAndUpdate({_id: req.body.id},{ status: isActive }, { upsert: true },function (err, result) {
+      if (err) return console.error(err);
+      console.log(result);
+
+      res.json(result);
+    });
+    // res.status(200).send("User Content.");
+  };
+
+
+// Contact.updateOne({
+//     phone: request.phone
+// }, { status: request.status }, { upsert: true });
+
 
 exports.adminBoard = (req, res) => {
   res.status(200).send("Admin Content.");
