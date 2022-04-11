@@ -24,13 +24,13 @@ const User = mongoose.model(
 
 //Update New field in existing model/collection
 
-User.updateMany(
-  {}, 
-  {$set: {firstname : '',lastname : '',status:'Pending' }},
-  {multi:true}, 
-    function(err, numberAffected){  
-      console.log(numberAffected);
-    });
+// User.updateMany(
+//   {}, 
+//   {$set: {firstname : '',lastname : '',status:'Pending' }},
+//   {multi:true}, 
+//     function(err, numberAffected){  
+//       console.log(numberAffected);
+//     });
 
     // mongoose.set('toJSON', {  //make id instead of _id
     //   virtuals: true,
