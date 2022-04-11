@@ -45,7 +45,7 @@ exports.signup = (req, res) => {
               res.status(500).send({ message: err });
               return;
             }
-            exports.sendMail();
+            exports.sendMail(req.body.email);
             res.json({ 
                 message: "User was registered successfully!",
                 'status':1
@@ -188,7 +188,7 @@ exports.signin = (req, res) => {
 
 
 
-exports.sendMail = (req, res) => {
+exports.sendMail = (toEmail) => {
 
     // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport({
@@ -203,7 +203,7 @@ const transporter = nodemailer.createTransport({
 
   const mailData = {
     from: 'dev@smartmarine.io',  // sender address
-      to: req.body.email,   // list of receivers
+      to: toEmail,   // list of receivers
       subject: 'Ticket System - Signup message',
       // text: 'That was easy!'
       html: '<p><b>Welcome !</p><br> <p>Thank you for signup</p><br/>',
