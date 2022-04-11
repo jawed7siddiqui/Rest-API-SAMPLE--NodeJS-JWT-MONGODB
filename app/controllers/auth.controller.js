@@ -18,7 +18,7 @@ exports.signup = (req, res) => {
     city: req.body.city,
     state: req.body.state,
     phone: req.body.phone,
-    status: "Pending",
+    status: "Active",
     password: bcrypt.hashSync(req.body.password, 8)
   });
 

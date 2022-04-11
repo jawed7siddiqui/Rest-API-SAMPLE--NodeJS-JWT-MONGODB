@@ -15,7 +15,7 @@ exports.userBoard = (req, res) => {
       users:User,
     }
     res.json(data);
-  }).sort({username: 1});
+  }).sort({username: -1});
   // res.status(200).send("User Content.");
 };
 
