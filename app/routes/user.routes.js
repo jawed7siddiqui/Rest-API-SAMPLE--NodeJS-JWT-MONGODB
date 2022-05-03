@@ -26,5 +26,12 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+
+  app.get("/api/user/email/crawl", controller.imapEmail);
+  app.get("/api/user/email/list", controller.emailList);
+  app.get("/api/user/email/conversions", controller.conversions);
+
+
+
 };
 

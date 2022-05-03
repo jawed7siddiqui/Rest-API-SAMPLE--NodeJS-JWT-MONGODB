@@ -22,6 +22,7 @@ const User = mongoose.model(
   })
 );
 
+
 //Update New field in existing model/collection
 
 // User.updateMany(
@@ -32,10 +33,6 @@ const User = mongoose.model(
 //       console.log(numberAffected);
 //     });
 
-    // mongoose.set('toJSON', {  //make id instead of _id
-    //   virtuals: true,
-    //   versionKey:false,
-    //   transform: function (doc, ret) {   delete ret._id  }
-    // });
+
 
 module.exports = User;

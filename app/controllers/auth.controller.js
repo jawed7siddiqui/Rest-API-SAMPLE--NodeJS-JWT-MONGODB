@@ -1,5 +1,4 @@
-var nodemailer = require('nodemailer');
-
+var helpers = require("./helpers");
 const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
@@ -18,7 +17,7 @@ exports.signup = (req, res) => {
     city: req.body.city,
     state: req.body.state,
     phone: req.body.phone,
-    status: "Pending",
+    status: "Pending",  //Pending ,Active
     password: bcrypt.hashSync(req.body.password, 8)
   });
 
@@ -45,8 +44,9 @@ exports.signup = (req, res) => {
               res.status(500).send({ message: err });
               return;
             }
-            exports.sendMail(req.body.email);
-            res.json({ 
+           
+            helpers.sendMail(req.body.email);
+            res.status(200).json({ 
                 message: "User was registered successfully!",
                 'status':1
               },200);
@@ -148,7 +148,8 @@ exports.signin = (req, res) => {
         {
             "action": "read",
             "subject": "Auth"
-        }];
+        }
+      ];
       }
 
       if(authorities[0] == 'ROLE_ADMIN'){
@@ -186,34 +187,13 @@ exports.signin = (req, res) => {
     });
 };
 
+exports.testMail = (req, res) => {
 
+helpers.sendMail(req.query.email);
+res.status(200).send({ message: "Mail send" });
 
-exports.sendMail = (toEmail) => {
-
-    // create reusable transporter object using the default SMTP transport
-const transporter = nodemailer.createTransport({
-  port: 465,               // true for 465, false for other ports
-  host: "smartmarine.io",
-     auth: {
-          user: 'dev@smartmarine.io',
-          pass: 'smart2022dev',
-       },
-  secure: true,
-  });
-
-  const mailData = {
-    from: 'dev@smartmarine.io',  // sender address
-      to: toEmail,   // list of receivers
-      subject: 'Ticket System - Signup message',
-      // text: 'That was easy!'
-      html: '<p><b>Welcome !</p><br> <p>Thank you for signup</p><br/>',
-    };
-
-    transporter.sendMail(mailData, (error, info) => {
-      if (error) {
-          return console.log(error);
-      }
-      res.status(200).send({ message: "Mail send", message_id: info.messageId });
-  });
 
 };
+
+
+

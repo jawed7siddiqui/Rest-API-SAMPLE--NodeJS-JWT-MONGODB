@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
+require('dotenv').config();
 // var nodemailer = require('nodemailer');
 
 const app = express();
@@ -50,6 +51,7 @@ require("./app/routes/admin.routes")(app);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
+  console.log("dotenv --"+process.env.PORT);
 });
 
 function initial() {

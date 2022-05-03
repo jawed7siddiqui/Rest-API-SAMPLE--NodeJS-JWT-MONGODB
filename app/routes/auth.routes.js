@@ -21,6 +21,6 @@ module.exports = function(app) {
 
   app.post("/api/auth/signin", controller.signin);
 
-  app.get("/api/auth/sendmail", controller.sendMail);
+  app.get("/api/auth/sendmail", controller.testMail);
 
 };
